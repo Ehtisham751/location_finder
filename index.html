@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.2/css/bulma.css"
+      integrity="sha256-8BrtNNtStED9syS9F+xXeP815KGv6ELiCfJFQmGi1Bg="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256mmgLKCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <title>Location Finder</title>
+    <style>
+      html {
+        background-color: #eee;
+      }
+      .icon-remove,
+      .icon-check {
+        display: none;
+      }
+      .icon-remove {
+        color: red !important;
+      }
+      .icon-check {
+        color: greenyellow !important;
+      }
+      .icon-pin {
+        color: hsl(48, 100%, 67%) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero hero-body is-dark container" style="max-width: 700px;">
+      <h1 class="title">PK Location Info</h1>
+      <h2 class="subtitle">Enter a zipcode to get the location info</h2>
+      <form id="zipForm">
+        <div class="field">
+          <div class="control">
+            <div class="select is-warning" style="width: 100%;">
+              <select id="select" style="width: 100% !important;">
+                <option value="ad">Andorra</option>
+                <option value="ar">Argentina</option>
+                <option value="ad">American Samoa</option>
+                <option value="at">Austria</option>
+                <option value="bd">Bangladesh</option>
+                <option value="be">Belgium</option>
+                <option value="bg">Bulgaria</option>
+                <option value="br">Brazil</option>
+                <option value="ca">Canada</option>
+                <option value="ch">Switzerland</option>
+                <option value="cz">Czech Republic</option>
+                <option value="de">Germany</option>
+                <option value="dk">Denmark</option>
+                <option value="do">Dominician Republic</option>
+                <option value="es">Spain</option>
+                <option value="fi">Finland</option>
+                <option value="fo">Faroe islands</option>
+                <option value="fr">France</option>
+                <option value="gb">Great Britian</option>
+                <option value="gf">French Guyana</option>
+                <option value="gg">Guernsey</option>
+                <option value="gl">GreenLand</option>
+                <option value="gp">Guadeloupe</option>
+                <option value="gt">Guatemala</option>
+                <option value="gu">Guam</option>
+                <option value="gy">Guyana</option>
+                <option value="hr">Croatia</option>
+                <option value="hu">Hungary</option>
+                <option value="im">Isle of Mam</option>
+                <option value="in">India</option>
+                <option value="is">Iceland</option>
+                <option value="it">Italy</option>
+                <option value="je">Jersey</option>
+                <option value="jp">Japan</option>
+                <option value="li">Liechtenstein</option>
+                <option value="lk">Sri Lanka</option>
+                <option value="lt">Lithuania</option>
+                <option value="lu">Luxembourg</option>
+                <option value="mc">Monaco</option>
+                <option value="md">Moldavia</option>
+                <option value="mh">Marshall Islands</option>
+                <option value="mk">Macedonia</option>
+                <option value="mp">Northern Mariana Islands</option>
+                <option value="mq">Martinique</option>
+                <option value="mx">Mexico</option>
+                <option value="my">Malaysia</option>
+                <option value="nl">Holland</option>
+                <option value="no">Norway</option>
+                <option value="nz">New Zeland</option>
+                <option value="ph">Phillipines</option>
+                <option value="pk" selected>Pakistan</option>
+                <option value="pl">Poland</option>
+                <option value="pm">Saint Pierre And Miquelon</option>
+                <option value="pr">Puerto Rico</option>
+                <option value="pt">Portugal</option>
+                <option value="re">French Reunion</option>
+                <option value="ru">Russia</option>
+                <option value="se">Sweden</option>
+                <option value="si">Slovenia</option>
+                <option value="sj">Svalbard & Jan Mayen Islands</option>
+                <option value="sk">Slovak Republic</option>
+                <option value="sm">San Marino</option>
+                <option value="th">Thailand</option>
+                <option value="tr">Turkey</option>
+                <option value="us">United States</option>
+                <option value="vs">Vatican</option>
+                <option value="vi">Virgin Islands</option>
+                <option value="yt">Mayotte</option>
+                <option value="za">South Africa</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control has-icons-left has-icons-right">
+            <input
+              class="input is-warning zip is-large"
+              type="text"
+              placeholder="Enter zipcode "
+            />
+            <span class="icon is-small is-left icon-pin">
+              <i class="fas fa-map-pin"></i>
+            </span>
+            <span class="icon is-small is-right icon-check">
+              <i class="fas fa-check"></i>
+            </span>
+            <span class="icon is-small is-right icon-remove">
+              <i class="fa fa-times"></i>
+            </span>
+          </div>
+        </div>
+        <button type="submit" class="button is-warning" style="width: 100%;">
+          Get Detail
+        </button>
+      </form>
+    </section>
+    <br />
+    <div class="container">
+      <div
+        id="output"
+        style="max-width: 700px; margin: auto; margin-bottom: 2rem;"
+      ></div>
+    </div>
+
+    <script>
+      // Listen for submit
+      document
+        .querySelector("#zipForm")
+        .addEventListener("submit", getLocationInfo);
+      document.querySelector("body").addEventListener("click", deleteLocation);
+
+      function getLocationInfo(e) {
+        // Get zip value from input
+        const zip = document.querySelector(".zip").value;
+        const selected = document.querySelector("#select").value;
+        if (zip === "") {
+          document.querySelector("#output").innerHTML = `
+                <article class="message is-danger"><div class="message-body">Please Enter a Zipcode</div></article>`;
+        } else {
+          document.querySelector("#output").innerHTML = `
+                <article class="message is-primary"><div class="message-body">Loading Please Wait...</div></article>`;
+        }
+
+        // Make request
+        fetch(`https://api.zippopotam.us/${selected}/${zip}`)
+          .then((res) => {
+            if (res.status != 200) {
+              showIcon("remove");
+              document.querySelector("#output").innerHTML = `
+                <article class="message is-danger"><div class="message-body">Invalid Zipcode, please try again</div></article>
+                `;
+              setTimeout(() => {
+                document.querySelector("#output").innerHTML = "";
+              }, 4000);
+              throw Error(res.statusText);
+            } else {
+              showIcon("check");
+              return res.json();
+            }
+          })
+          .then((data) => {
+            // Show location info
+            let output = "";
+            data.places.forEach((place) => {
+              output += `
+              <article class="message is-warning">
+                <div class="message-header">
+                  <p>Location Info</p>
+                  <button class="delete"></button>
+                </div>
+                <div class="message-body">
+                  <ul>
+                    <li><strong>City:</strong> ${place["place name"]}</li>
+                    <li><strong>State:</strong> ${place["state"]}</li>
+                    <li><strong>Longitude:</strong> ${place["longitude"]}</li>
+                    <li><strong>Latitude:</strong> ${place["latitude"]}</li>
+                  </ul>
+                </div>
+              </article>
+                `;
+            });
+            document.querySelector("#output").innerHTML = output;
+          })
+          .catch((err) => {
+            if (err == `TypeError: Failed to fetch` && zip != "") {
+              document.querySelector("#output").innerHTML = `
+                <article class="message is-danger"><div class="message-body">${err}, Please check your connection</div></article>
+                `;
+            }
+            console.log(err);
+          });
+        e.preventDefault();
+      }
+
+      function showIcon(icon) {
+        // Clear icons
+        document.querySelector(".icon-remove").style.display = "none";
+        document.querySelector(".icon-check").style.display = "none";
+        // Show current icon
+        document.querySelector(`.icon-${icon}`).style.display = "inline-flex";
+      }
+      function deleteLocation(e) {
+        if (e.target.className === "delete") {
+          document.querySelector(".message").remove();
+          document.querySelector(".zip").value = "";
+          document.querySelector(".icon-check").style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>
